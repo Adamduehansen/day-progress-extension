@@ -1,15 +1,13 @@
 function getPercentageOfDayPassed(date) {
-  var startOfDay = new Date(
+  const startOfDay = new Date(
     date.getFullYear(),
     date.getMonth(),
     date.getDate()
   );
-  var millisecondsInDay = 24 * 60 * 60 * 1000;
+  const millisecondsInDay = 24 * 60 * 60 * 1000;
 
-  var elapsedMilliseconds = date - startOfDay;
-  var percentage = Math.floor((elapsedMilliseconds / millisecondsInDay) * 100);
-
-  return percentage;
+  const elapsedMilliseconds = date - startOfDay;
+  return Math.floor((elapsedMilliseconds / millisecondsInDay) * 100);
 }
 
 function update() {
