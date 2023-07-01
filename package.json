@@ -1,0 +1,7 @@
+{
+  "name": "day-progress",
+  "private": true,
+  "devDependencies": {
+    "@types/chrome": "^0.0.239"
+  }
+}

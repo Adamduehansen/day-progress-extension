@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Day Progress",
+  "version": "1.0.0",
+  "action": {
+    "default_title": "Day Progress"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [
+    "alarms"
+  ]
+}
