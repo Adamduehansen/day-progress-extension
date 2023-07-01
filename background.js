@@ -7,9 +7,9 @@ function getPercentageOfDayPassed(date) {
   var millisecondsInDay = 24 * 60 * 60 * 1000;
 
   var elapsedMilliseconds = date - startOfDay;
-  var percentage = (elapsedMilliseconds / millisecondsInDay) * 100;
+  var percentage = Math.floor((elapsedMilliseconds / millisecondsInDay) * 100);
 
-  return percentage.toFixed(2);
+  return percentage;
 }
 
 function update() {
@@ -57,9 +57,9 @@ function updateIcon(percentage) {
 }
 
 function updateBadgeText(percentage) {
-  // chrome.action.setBadgeText({
-  //   text: `${percentage}%`,
-  // });
+  chrome.action.setBadgeText({
+    text: `${percentage}%`,
+  });
 }
 
 chrome.alarms.create('Timer', {
