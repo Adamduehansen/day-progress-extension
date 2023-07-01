@@ -1,15 +1,25 @@
-chrome.alarms.create('Timer', {
-  periodInMinutes: 1 / 60,
-});
+function getPercentageOfDayPassed(date) {
+  var startOfDay = new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate()
+  );
+  var millisecondsInDay = 24 * 60 * 60 * 1000;
+
+  var elapsedMilliseconds = date - startOfDay;
+  var percentage = (elapsedMilliseconds / millisecondsInDay) * 100;
+
+  return percentage.toFixed(2);
+}
 
 function update() {
-  const percentageOfDayProgess = 0;
+  const percentageOfDayProgess = getPercentageOfDayPassed(new Date());
 
   updateIcon(percentageOfDayProgess);
   updateBadgeText(percentageOfDayProgess);
 }
 
-function updateIcon(percentageOfDayProgess) {
+function updateIcon(percentage) {
   const canvas = new OffscreenCanvas(16, 16);
   const context = canvas.getContext('2d');
 
@@ -17,19 +27,44 @@ function updateIcon(percentageOfDayProgess) {
     return;
   }
 
-  context.clearRect(0, 0, 16, 16);
-  context.fillStyle = '#00FF00';
-  context.fillRect(0, 0, 16, 16);
+  const centerX = canvas.width / 2;
+  const centerY = canvas.height / 2;
+  const radius = Math.min(centerX, centerY);
+  const startAngle = -0.5 * Math.PI;
+  const endAngle = startAngle + 2 * Math.PI * (percentage / 100);
+
+  context.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw background
+  context.beginPath();
+  context.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+  context.fillStyle = '#e0e0e0';
+  context.fill();
+
+  // Draw the filled part
+  context.beginPath();
+  context.moveTo(centerX, centerY);
+  context.arc(centerX, centerY, radius, startAngle, endAngle);
+  context.closePath();
+  context.fillStyle = '#ff0000';
+  context.fill();
+
   const imageData = context.getImageData(0, 0, 16, 16);
+
   chrome.action.setIcon({
     imageData: imageData,
   });
 }
 
-function updateBadgeText(percentageOfDayProgess) {
-  chrome.action.setBadgeText({
-    text: `${percentageOfDayProgess}%`,
-  });
+function updateBadgeText(percentage) {
+  // chrome.action.setBadgeText({
+  //   text: `${percentage}%`,
+  // });
 }
 
+chrome.alarms.create('Timer', {
+  periodInMinutes: 1,
+});
+
 chrome.alarms.onAlarm.addListener(update);
+update();
