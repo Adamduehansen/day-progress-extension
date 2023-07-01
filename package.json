@@ -1,5 +1,5 @@
 {
-  "name": "day-progress",
+  "name": "day-progress-extension",
   "private": true,
   "devDependencies": {
     "@types/chrome": "^0.0.239"
