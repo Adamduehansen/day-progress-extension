@@ -1,3 +1,7 @@
+import { getStoredOptions } from './storage';
+
+let fillColor = '#000000';
+
 function renderIcon(percentage: number) {
   const canvas = new OffscreenCanvas(16, 16);
   const context = canvas.getContext('2d');
@@ -25,7 +29,7 @@ function renderIcon(percentage: number) {
   context.moveTo(centerX, centerY);
   context.arc(centerX, centerY, radius, startAngle, endAngle);
   context.closePath();
-  context.fillStyle = '#ff0000';
+  context.fillStyle = fillColor;
   context.fill();
 
   const imageData = context.getImageData(0, 0, 16, 16);
@@ -66,3 +70,10 @@ chrome.alarms.create('Timer', {
 
 chrome.alarms.onAlarm.addListener(update);
 update();
+
+getStoredOptions().then((options) => {
+  fillColor = options.fillColor;
+
+  const percentageOfDayProgess = getPercentageOfDayPassed(new Date());
+  renderIcon(percentageOfDayProgess);
+});

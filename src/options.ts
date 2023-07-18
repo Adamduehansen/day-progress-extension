@@ -1,23 +1,10 @@
-interface LocalStorage {
-  fillColor: string;
-}
-
-type LocalStorageKeys = keyof LocalStorage;
+import { LocalStorage, getStoredOptions } from './storage';
 
 const fillColorPicker = getElement<HTMLInputElement>('#fill-color-picker');
 const saveButton = getElement<HTMLButtonElement>('button');
 
 function getElement<T extends Element = Element>(selector: string): T | null {
   return document.querySelector<T>(selector);
-}
-
-function getStoredOptions(): Promise<LocalStorage> {
-  const keys: LocalStorageKeys[] = ['fillColor'];
-  return new Promise((resolve) => {
-    chrome.storage.local.get(keys, (result) => {
-      resolve(result as LocalStorage);
-    });
-  });
 }
 
 function initFillColorPicker(value: string): void {
