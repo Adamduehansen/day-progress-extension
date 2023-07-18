@@ -73,7 +73,5 @@ update();
 
 getStoredOptions().then((options) => {
   fillColor = options.fillColor;
-
-  const percentageOfDayProgess = getPercentageOfDayPassed(new Date());
-  renderIcon(percentageOfDayProgess);
+  update();
 });
