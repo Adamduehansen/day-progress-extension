@@ -21,7 +21,7 @@ function renderIcon(percentage: number) {
   // Draw background
   context.beginPath();
   context.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-  context.fillStyle = '#e0e0e0';
+  context.fillStyle = 'rgba(0, 0, 0, 0)';
   context.fill();
 
   // Draw the filled part
