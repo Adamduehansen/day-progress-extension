@@ -1,23 +1,4 @@
-function getPercentageOfDayPassed(date) {
-  const startOfDay = new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDate()
-  );
-  const millisecondsInDay = 24 * 60 * 60 * 1000;
-
-  const elapsedMilliseconds = date - startOfDay;
-  return Math.floor((elapsedMilliseconds / millisecondsInDay) * 100);
-}
-
-function update() {
-  const percentageOfDayProgess = getPercentageOfDayPassed(new Date());
-
-  updateIcon(percentageOfDayProgess);
-  updateBadgeText(percentageOfDayProgess);
-}
-
-function updateIcon(percentage) {
+function renderIcon(percentage: number) {
   const canvas = new OffscreenCanvas(16, 16);
   const context = canvas.getContext('2d');
 
@@ -54,7 +35,26 @@ function updateIcon(percentage) {
   });
 }
 
-function updateBadgeText(percentage) {
+function getPercentageOfDayPassed(date: Date) {
+  const startOfDay = new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate()
+  );
+  const millisecondsInDay = 24 * 60 * 60 * 1000;
+
+  const elapsedMilliseconds = date.getTime() - startOfDay.getTime();
+  return Math.floor((elapsedMilliseconds / millisecondsInDay) * 100);
+}
+
+function update() {
+  const percentageOfDayProgess = getPercentageOfDayPassed(new Date());
+
+  renderIcon(percentageOfDayProgess);
+  updateBadgeText(percentageOfDayProgess);
+}
+
+function updateBadgeText(percentage: number) {
   chrome.action.setBadgeText({
     text: `${percentage}%`,
   });
