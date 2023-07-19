@@ -24,7 +24,9 @@ function saveOptions(): void {
     fillColor: fillColorPicker.value,
   };
 
-  chrome.storage.local.set(updatedOptions, () => {});
+  chrome.storage.local.set(updatedOptions, () => {
+    chrome.runtime.sendMessage(updatedOptions);
+  });
 }
 
 if (saveButton !== null) {

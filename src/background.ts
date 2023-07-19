@@ -1,4 +1,4 @@
-import { getStoredOptions } from './storage.js';
+import { LocalStorage, getStoredOptions } from './storage.js';
 
 let fillColor = '#000000';
 
@@ -67,6 +67,19 @@ function updateBadgeText(percentage: number) {
 chrome.alarms.create('Timer', {
   periodInMinutes: 1,
 });
+
+chrome.runtime.onMessage.addListener(
+  (request: LocalStorage, sender, sendResponse) => {
+    console.log(
+      sender.tab
+        ? 'from a content script:' + sender.tab.url
+        : 'from the extension'
+    );
+
+    fillColor = request.fillColor;
+    update();
+  }
+);
 
 chrome.alarms.onAlarm.addListener(update);
 update();
