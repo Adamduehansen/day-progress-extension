@@ -1,4 +1,4 @@
-import { LocalStorage, getStoredOptions } from './storage.js';
+import { LocalStorage, getStoredOptions, setStoredOptions } from './storage.js';
 
 let fillColor = '#000000';
 
@@ -82,6 +82,12 @@ chrome.runtime.onMessage.addListener(
 );
 
 chrome.alarms.onAlarm.addListener(update);
+chrome.runtime.onInstalled.addListener(() => {
+  setStoredOptions({
+    fillColor: '#000000',
+  });
+});
+
 update();
 
 getStoredOptions().then((options) => {
