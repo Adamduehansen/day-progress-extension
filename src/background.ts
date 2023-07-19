@@ -1,4 +1,4 @@
-import { getStoredOptions } from './storage';
+import { getStoredOptions } from './storage.js';
 
 let fillColor = '#000000';
 

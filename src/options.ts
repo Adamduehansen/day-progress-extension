@@ -1,4 +1,4 @@
-import { LocalStorage, getStoredOptions } from './storage';
+import { LocalStorage, getStoredOptions } from './storage.js';
 
 const fillColorPicker = getElement<HTMLInputElement>('#fill-color-picker');
 const saveButton = getElement<HTMLButtonElement>('button');
