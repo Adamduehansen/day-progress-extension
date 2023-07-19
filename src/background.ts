@@ -1,6 +1,7 @@
 import { LocalStorage, getStoredOptions, setStoredOptions } from './storage.js';
 
 let fillColor = '#000000';
+let showPercentageText = true;
 
 function renderIcon(percentage: number) {
   const canvas = new OffscreenCanvas(16, 16);
@@ -55,12 +56,12 @@ function update() {
   const percentageOfDayProgess = getPercentageOfDayPassed(new Date());
 
   renderIcon(percentageOfDayProgess);
-  updateBadgeText(percentageOfDayProgess);
+  updateBadgeText(percentageOfDayProgess, showPercentageText);
 }
 
-function updateBadgeText(percentage: number) {
+function updateBadgeText(percentage: number, showPercentageText: boolean) {
   chrome.action.setBadgeText({
-    text: `${percentage}%`,
+    text: showPercentageText ? `${percentage}%` : '',
   });
 }
 
@@ -68,23 +69,17 @@ chrome.alarms.create('Timer', {
   periodInMinutes: 1,
 });
 
-chrome.runtime.onMessage.addListener(
-  (request: LocalStorage, sender, sendResponse) => {
-    console.log(
-      sender.tab
-        ? 'from a content script:' + sender.tab.url
-        : 'from the extension'
-    );
-
-    fillColor = request.fillColor;
-    update();
-  }
-);
+chrome.runtime.onMessage.addListener((request: LocalStorage) => {
+  fillColor = request.fillColor;
+  showPercentageText = request.showPercentageText;
+  update();
+});
 
 chrome.alarms.onAlarm.addListener(update);
 chrome.runtime.onInstalled.addListener(() => {
   setStoredOptions({
     fillColor: '#000000',
+    showPercentageText: true,
   });
 });
 
@@ -92,5 +87,6 @@ update();
 
 getStoredOptions().then((options) => {
   fillColor = options.fillColor;
+  showPercentageText = options.showPercentageText;
   update();
 });
